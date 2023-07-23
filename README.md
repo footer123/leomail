@@ -9,9 +9,10 @@ Leo Mail is an innovative decentralized email platform built on the Aleo blockch
 ![image](https://github.com/footer123/leomail/assets/137860233/50396970-112c-4a7a-b79b-7a063b9675e7)
 *The communication principle of Leo Mail involves converting the content of emails into ASCII code and storing it on the Aleo network. The recipient can then decrypt the ASCII code to obtain the actual content of the email. Due to Aleo's privacy policies, only the sender and recipient can access the true content of the emails. **As it is currently in the demo version, it only supports ASCII characters, and the length of the email content cannot exceed 150 characters.***
 
-Here is the core code:
+Here is the core code(**Leo**):
 
-    /* Leo Code */
+the email content
+
     // the email content
     struct Email {
 	    timestamp:u64,
@@ -32,32 +33,37 @@ Here is the core code:
 	    msgid:u64,
 	    is_sender:bool,
     }
+ 
+Send email
 
     transition sendmsg (sender:address,receive:address,email:Email,msgid:u64) -> (chat,chat) {
-		assert_eq(self.caller,sender );
-	    let sender_chat:chat = chat {
-	    owner:sender,
-	    target:receive,
-	    email:email,
-	    is_sender:true,
-	    msgid:msgid,
-	    };
-	    
-	    let receive_chat:chat = chat {
-	    owner:receive,
-	    target:sender,
-	    email:email,
-	    msgid:msgid,
-	    is_sender:false,
+    	assert_eq(self.caller,sender );
+        let sender_chat:chat = chat {
+        owner:sender,
+        target:receive,
+        email:email,
+        is_sender:true,
+        msgid:msgid,
+        };
+        
+       
+    
+     let receive_chat:chat = chat {
+        owner:receive,
+        target:sender,
+        email:email,
+        msgid:msgid,
+        is_sender:false,
+    
     };
     
     return (sender_chat,receive_chat) then finalize(sender,msgid);
     }
     
     finalize sendmsg (sender:address,msgid:u64) {
-	    let count:u64 = Mapping::get_or_use(account_msg_count,sender,0u64);
-	    assert_eq(msgid, count+1u64);
-	    Mapping::set(account_msg_count,sender,msgid);
+        let count:u64 = Mapping::get_or_use(account_msg_count,sender,0u64);
+        assert_eq(msgid, count+1u64);
+        Mapping::set(account_msg_count,sender,msgid);
     }
 
 
