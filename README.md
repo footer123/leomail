@@ -37,7 +37,7 @@ the email content
 Send email
 
     transition sendmsg (sender:address,receive:address,email:Email,msgid:u64) -> (chat,chat) {
-    	assert_eq(self.caller,sender );
+        assert_eq(self.caller,sender );
         let sender_chat:chat = chat {
         owner:sender,
         target:receive,
