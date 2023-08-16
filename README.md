@@ -4,7 +4,7 @@ Leo Mail - Decentralized Email Platform
 
 You can use leo mail here : https://leomail.cc
 
-Leo Mail is an innovative decentralized email platform built on the Aleo blockchain's privacy protocol. This unique email application provides users with a secure, private, and decentralized email communication experience, aiming to protect users' personal information and data privacy.
+Leo Mail is an innovative decentralized email platform built on the Aleo Network's privacy protocol. This unique email application provides users with a secure, private, and decentralized email communication experience, aiming to protect users' personal information and data privacy.
 
    
 ![image](https://github.com/footer123/leomail/assets/137860233/f23065dc-fbb9-4556-a28b-44296732b34b)
