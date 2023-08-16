@@ -1,4 +1,4 @@
-# leomail
+# Leomail Introduction
 
 Leo Mail - Decentralized Email Platform
 
@@ -34,14 +34,27 @@ Leo Mail is an innovative decentralized email platform built on the Aleo Network
    email communication.
    
 
+****
 
+## How Can Leomail Empower the Aleo Network?
 
-**Leo Mail, as a practical application, adds value to the Aleo Network's ecosystem. It attracts more users and developers to join the Aleo Network's community, providing tangible benefits and user experiences to a broader audience.**
-    
-By developing applications like Leo Mail, the Aleo Network can better promote and adopt its blockchain technology. These applications attract more attention to the Aleo Network and help people understand and recognize the practical value of blockchain technology in everyday life.**
+ - **Content Enrichment**
 
+	LeoMail introduces a pivotal use-case to the Aleo Network, providing decentralized email services, further diversifying the DApp ecosystem of Aleo.
 
+ - **User Base Expansion**
 
+	Email services are a daily essential. By introducing LeoMail, the Aleo Network can potentially attract more everyday users, amplifying its overall user base and activity.
+
+ - **Showcasing Aleo's Versatility**
+
+	By accommodating an application like LeoMail, the Aleo Network demonstrates its capability to support various application types and business scenarios, thereby validating its versatility.
+
+ - **Publicity and Reputation**
+
+ 	As a decentralized email service, the uniqueness of LeoMail might draw significant attention and discussion. This not only boosts exposure for LeoMail itself but also indirectly elevates the prominence and reputation of the Aleo Network.
+
+****
 
 ## Usage
 
