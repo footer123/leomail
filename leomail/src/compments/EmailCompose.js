@@ -87,10 +87,7 @@ function EmailCompose(pros) {
             message_root.render(<MessageBox key={Date.now()+''} title="Info" content={"Can't get the address of " + recipient} />)
             return
         }
-        // 在这里处理发送邮件的逻辑
-        console.log('Recipient:', address);
-        console.log('Subject:', subject);
-        console.log('Content:', content);
+
         if(!content || !subject){
             alert("parameters can not be null")
             return}
@@ -109,8 +106,7 @@ function EmailCompose(pros) {
         let subject_group = get_utf_380_string(sub_utf_string);
         let content_group = get_utf_1520_string(content_utf_string);
 
-        console.log('subject'+subject_group)
-        console.log('content'+content_group)
+
         const email = {
             'timestamp':Date.now()+'u64',
             'subject':subject_group,
@@ -132,7 +128,6 @@ function EmailCompose(pros) {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
 
             if(transtionid){
                 content_root.render(<Pop transactionId={transtionid}/>)

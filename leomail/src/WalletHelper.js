@@ -9,7 +9,7 @@ export class WalletHelper {
     connectWallet = async ()=>{
         try{
             const state = await leoWallet.connect("VIEW_KEY_ACCESS", WalletAdapterNetwork.Testnet);
-            console.log(state)
+
             emitter.emit('event_wallet_connected')
             return true
         }
@@ -17,7 +17,6 @@ export class WalletHelper {
             console.log(e)
             if(leoWallet.readyState === "NotDetected"){
                 const url =leoWallet.url
-                console.log(message_root)
                 message_root.render(<MessageBox key={Date.now()+''} title="Hello" content="Please install leo wallet"  url={url}  /> )
             }
             return false
@@ -43,7 +42,7 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
+
             return transtionid
         }
         catch (e) {
@@ -65,7 +64,7 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
+
             return transtionid
         }
         catch (e) {
@@ -87,7 +86,7 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
+
             return transtionid
         }
         catch (e) {
@@ -110,7 +109,6 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
             return transtionid
         }
         catch (e) {
@@ -133,7 +131,6 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
             return transtionid
         }
         catch (e) {
@@ -240,7 +237,6 @@ export class WalletHelper {
                     return  item.spent === true;
                 })
             }
-            console.log(email_list)
             return email_list;
         }
         catch (e) {
@@ -263,7 +259,6 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
             return transtionid
         }
         catch (e) {
@@ -288,7 +283,6 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
             return transtionid
         }
         catch (e) {
@@ -311,7 +305,6 @@ export class WalletHelper {
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
             return transtionid
         }
         catch (e) {
@@ -363,7 +356,6 @@ export class WalletHelper {
         );
 
             const transtionid = await leoWallet.requestTransaction(transaction)
-            console.log(transtionid)
             return transtionid
         }
         catch (e) {
@@ -408,7 +400,6 @@ export class WalletHelper {
             'spent':spent,
             'record':chainData
         }
-        console.log(email)
         return email;
     }
 

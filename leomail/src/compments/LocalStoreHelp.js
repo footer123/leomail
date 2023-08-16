@@ -30,7 +30,6 @@ export const syncAllContacts = async () => {
         const value = JSON.parse(filters[0].value)
         all_contacts.push({'address':item.value,'detail':value})
     }
-    console.log(all_contacts)
     localStorage.setItem('Contacts',JSON.stringify(all_contacts))
 
 
@@ -41,7 +40,7 @@ export const syncAllDomains = async () => {
     try{
         const response = await fetch( remote_base_url +'/list_program_mapping_values/'+program_id+'/total_nft');
         const domains = await response.json();
-        console.log(domains)
+
         localStorage.setItem('Domains',JSON.stringify(domains))
     }
     catch (e) {

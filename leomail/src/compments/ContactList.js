@@ -67,7 +67,6 @@ export class ContactList extends Component{
             }));
         // }
         emitter.on('refreshContactlist',async ()=>{
-            console.log('emit refreshContactlist ');
             this.get_contacts()
 
         })
@@ -81,7 +80,6 @@ export class ContactList extends Component{
 
     async get_contacts(){
         const contacts = await walletHelper.refreshContacts()
-        console.log(contacts)
 
         this.setState({'contacts':contacts})
     }
@@ -124,7 +122,6 @@ export class ContactList extends Component{
                 const address = split[1].replace('account:','').replace('}','').trim()
                 contacts.push({'field':item.field,'name':name,'address':address})
             })
-            console.log(contacts)
 
             this.setState({'contacts':contacts})
             localStorage.setItem('contacts',JSON.stringify(contacts))// save to localStorage

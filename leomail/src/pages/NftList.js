@@ -94,7 +94,6 @@ function TransferDomain(pros) {
 
     const close = () => {
         message_root.render("")
-        console.log(domainNft)
     }
 
     const transfer =async () => {

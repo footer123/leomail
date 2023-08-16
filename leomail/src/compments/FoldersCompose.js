@@ -30,7 +30,6 @@ function FoldersCompose(pros) {
     }
 
     const refreshPreview = async () => {
-        console.log('Start to Refresh preview')
         if(!await walletHelper.connectWallet()) {return}
         const type = current_box
         let temp_email_list = []
@@ -79,7 +78,6 @@ function FoldersCompose(pros) {
         }, 2000);
 
         emitter.on('event_wallet_connected',async () => {
-            console.log('emit event_wallet_connected ');
             if(leoWallet.publicKey){
                 const subpri = leoWallet.publicKey.substr(0,16)
                 const subend = leoWallet.publicKey.substr(leoWallet.publicKey.length-5,leoWallet.publicKey.length-1)
@@ -87,11 +85,9 @@ function FoldersCompose(pros) {
             }
         });
         emitter.on('refreshPreviewEvent',async ()=>{
-            console.log('emit refreshPreviewEvent ');
             await refreshPreview()
         })
         emitter.on('event_change_folder',async () => {
-            console.log('emit event_change_folder ');
             await refreshPreview()
         });
 
