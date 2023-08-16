@@ -1,3 +1,71 @@
+## Usage
+
+**Install snarkOS**  
+*detail: https://developer.aleo.org/testnet/getting_started/deploy_execute*
+
+    git clone https://github.com/AleoHQ/snarkOS.git  
+    cd snarkOS  
+    git checkout testnet3  
+    cargo install --path .
+
+**Execute**  
+*eg: enable_mailbox*
+```
+snarkos developer execute "leomailprov1.aleo" "enable_mailbox" "${your_address}" --private-key "${your_privateKey}" --query "https://vm.aleo.org/api" --broadcast "https://vm.aleo.org/api/testnet3/transaction/broadcast" --fee 1000000 --record "${RECORD}"
+```
+
+## Structs:
+
+    // the maximum length of field is 76,
+    // We use 75 of those digits to store data. Every 3 digitsrepresent a UTF-8 value,
+    // so each "field" type can store up to 25 characters.
+    // Since some characters have a UTF-8 value less than 100, resulting in a mismatch in 		length, 		  
+    //we add 100 to each UTF-8 value.
+    // for example: the utf8 code of 'Hello' was '72 101 108 108 111', We plus 100 to every value
+    // so we store '172 201 208 208 211' into UTF8T380 
+    // UTF8T380 means 76*5=380
+    
+    struct UTF8T380 {
+        part1:field,
+        part2:field,
+        part3:field,
+        part4:field,
+        part5:field,
+    }
+
+    // 4 times UTF8T380 = 1520
+    struct UTF8T1520 {
+        part1:UTF8T380,
+        part2:UTF8T380,
+        part3:UTF8T380,
+        part4:UTF8T380,
+    }
+    // the mail content
+    struct Mail {
+        timestamp:u64,
+        subject:UTF8T380,
+        content:UTF8T1520,
+    }
+	// the price list of domain
+    struct PriceList {
+        price3:u64,  // 3 digits
+        price4:u64,  // 4 digits
+        price5:u64,  // 5 digits
+        price6:u64,  // 6 digits
+        price7:u64,  // 7 digits
+        price8:u64,  // 8 digits
+        price_other:u64 // others
+    }
+	// the user's blacklist
+    struct BlackList {
+        black1:address,
+        black2:address,
+        black3:address,
+        black4:address,
+        black5:address,
+    }
+
+
 ## Core Methods
 
  **init_base**  
