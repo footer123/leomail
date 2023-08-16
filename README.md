@@ -12,6 +12,8 @@ Leo Mail is an innovative decentralized email platform built on the Aleo blockch
 
 *The communication principle of Leo Mail involves converting the content of emails into UTF8 code and storing it on the Aleo network. The recipient can then decrypt the UTF8 code to obtain the actual content of the email. Due to Aleo's privacy policies, only the sender and recipient can access the true content of the emails. **As it is currently in the demo version, it only supports UTF8 characters, and the length of the email content cannot exceed 500 characters.***
 
+![intro1](https://github.com/footer123/leomail/assets/137860233/7496f09f-c650-4b65-acb9-a29320fa72ff)
+
 **Key Features:**
 
  - Privacy Protection: Leo Mail prioritizes user privacy. Leveraging Aleo blockchain's privacy protocol and zero-knowledge proofs, all
