@@ -210,12 +210,12 @@ inputs
  `NFT`:return the record of domain
  
     transition mint_nft (
-    		domain:field,
-    		payment:credits.leo/credits,
-    		treasury: address,
-    		price:u64,
-    		domain_length:u8
-		    ) -> NFT
+    	domain:field,
+    	payment:credits.leo/credits,
+    	treasury: address,
+    	price:u64,
+    	domain_length:u8
+		) -> NFT
 
 **add_contact**  
 *user can add contact by this* 
@@ -229,10 +229,10 @@ inputs
  `Contact`:return the record of contact
 
     transition add_contact(
-		    sender:address,
-		    target:address,
-		    name:field
-		    ) -> Contact
+		sender:address,
+		target:address,
+		name:field
+		) -> Contact
 
 
 **send_msg**  
@@ -248,9 +248,9 @@ inputs
  `(Chat,Chat)`:return the record the sender and receiver
 
     transition send_msg (
-    		sender:address,
-    		receive:address,
-    		mail:Mail,
-    		msgid:u64
-	    ) -> (Chat,Chat)
+    	sender:address,
+    	receive:address,
+    	mail:Mail,
+    	msgid:u64
+	) -> (Chat,Chat)
 
