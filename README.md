@@ -38,33 +38,24 @@ Leo Mail is an innovative decentralized email platform built on the Aleo blockch
     
 By developing applications like Leo Mail, the Aleo Network can better promote and adopt its blockchain technology. These applications attract more attention to the Aleo Network and help people understand and recognize the practical value of blockchain technology in everyday life.**
 
-# Core code
 
-## Mappings:
 
-  **account_msg_count**: *it records the msg index of address*
-  
-  `mapping account_msg_count: address => u64`
-  
- **total_nft**: *key is ascii value  of domain + 100*
- 
- `mapping total_nft: field => address`
 
-  **treasury_store**: *store the treasury address* 
-  
-  `mapping treasury_store: u8 => address`
+## Usage
 
- **price_store**: *store the price list of nfts*
- 
- `mapping price_store: u8 => u64`
+**Install snarkOS**  
+*detail: https://developer.aleo.org/testnet/getting_started/deploy_execute*
 
-**black_list_store**: *store the user's blcok list*
+    git clone https://github.com/AleoHQ/snarkOS.git  
+    cd snarkOS  
+    git checkout testnet3  
+    cargo install --path .
 
-`mapping black_list_store: address => BlackList`
-
-**mailbox_state_store** :*the mailbox state, 0u8: enable , 1u8:disable*
-
-`mapping mailbox_state_store: address => u8`;
+**Execute**  
+*eg: enable_mailbox*
+```
+snarkos developer execute "leomailprov1.aleo" "enable_mailbox" "${your_address}" --private-key "${your_privateKey}" --query "https://vm.aleo.org/api" --broadcast "https://vm.aleo.org/api/testnet3/transaction/broadcast" --fee 1000000 --record "${RECORD}"
+```
 
 ## Structs:
 
@@ -116,4 +107,135 @@ By developing applications like Leo Mail, the Aleo Network can better promote an
         black4:address,
         black5:address,
     }
+
+## Record  
+
+**Chat**    
+*This is the email record. Each record contains the sender and the recipient.*
+
+
+    record Chat{
+	    owner:address,
+	    target:address,
+	    mail:Mail,
+	    msgid:u64,
+	    is_sender:bool,
+    
+    }
+
+  
+  **Domain NFT**  
+  *after user mint domain nft, we can get the value from mapping **total_nft***
+
+
+    record NFT {
+	    owner:address,
+	    domain:field,
+	    data1:field,
+	    data2:field,
+    }
+
+  **Contact**  
+*the user's contact record, we can get the contact list from record list*
+
+    record Contact {
+	    owner: address,
+	    target:address,
+	    name:field,
+    }
+
+
+
+## Core Methods
+
+ **init_base**  
+ *Initialize the treasury and price list.*    
+ 
+inputs  
+`treasury`: 	*the treasury address*  
+`price_list`: 	*the price list of domain nft*  
+
+ outputs: *null*
+
+    transition init_base (
+        treasury:address,
+        price_list:PriceList
+    ) 
+
+**set_black_list**  
+*set user's blacklist*  
+
+inputs   
+`blacklist`: *the blacklists*    
+
+ outputs: *null*
+ 
+    transition set_black_list (blacklist:BlackList)
+
+**enable_mailbox**  
+*set the state of mailbox*   
+
+inputs  
+	`sender`: *the address will be enable*  
+ 
+ outputs: *null*  
+
+     transition enable_mailbox (sender:address)
+**mint_nft**  
+*mint domain nft,user can send mail with domain*
+
+inputs  
+	`domain`: *the domain will be init*  
+	`payment`: *the payment of domain*  
+	`treasury`: *the address of treasury*  
+	`price`: *the price of domain*  
+	`domain_length`: *domain length*  
+ 
+ outputs  
+ `NFT`:return the record of domain
+ 
+    transition mint_nft (
+    		domain:field,
+    		payment:credits.leo/credits,
+    		treasury: address,
+    		price:u64,
+    		domain_length:u8
+		    ) -> NFT
+
+**add_contact**  
+*user can add contact by this* 
+
+inputs  
+	`sender`: *the caller*  
+	`target`: *the address who will be add in sender's contact list*  
+	`name`: *the name of target address*  
+ 
+ outputs  
+ `Contact`:return the record of contact
+
+    transition add_contact(
+		    sender:address,
+		    target:address,
+		    name:field
+		    ) -> Contact
+
+
+**send_msg**  
+by this method,user can send mail to otherone.  
+
+inputs  
+	`sender`: *the sender address*  
+	`receive`: *the target address who will receive the mail*  
+	`mail`: *the mail content*  
+	`msgid`: *the index of sender user's mail list*  
+ 
+ outputs  
+ `(Chat,Chat)`:return the record the sender and receiver
+
+    transition send_msg (
+    		sender:address,
+    		receive:address,
+    		mail:Mail,
+    		msgid:u64
+	    ) -> (Chat,Chat)
 
