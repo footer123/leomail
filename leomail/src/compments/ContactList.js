@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from "react";
-import {content_root, emitter, leoWallet, program_id, remote_base_url, walletHelper} from "./Config";
+import {content_root, emitter, leoWallet, program_id, remote_base_url, walletHelper} from "../Config";
 import ReactDOM from "react-dom/client";
 import FoldersCompose from "./FoldersCompose";
 import Pop from "./TranscationPop";
@@ -28,7 +28,7 @@ export class ContactList extends Component{
                     <div>
                         <div onClick={() => this.addNewContact()} className="menu-button">
                             <img className="img_button" src='addcontact.png'/>
-                            Add New Contact
+                               New Contact
                         </div>
                         <ul className="contact-list">
                             {contacts.length > 0 && contacts.map((item, index) => (
@@ -61,14 +61,14 @@ export class ContactList extends Component{
     componentDidMount() {
         // const { count } = this.state;
         // if(count === 0){
-            this.get_contact_list()
+            this.get_contacts()
             this.setState((prevState) => ({
                 count: prevState.count + 1,
             }));
         // }
         emitter.on('refreshContactlist',async ()=>{
-            console.log('触发了 refreshContactlist 事件');
-            this.get_contact_list()
+            console.log('emit refreshContactlist ');
+            this.get_contacts()
 
         })
 
@@ -77,6 +77,13 @@ export class ContactList extends Component{
 
     componentWillUnmount() {
 
+    }
+
+    async get_contacts(){
+        const contacts = await walletHelper.refreshContacts()
+        console.log(contacts)
+
+        this.setState({'contacts':contacts})
     }
 
     async get_contact_list(address) {
@@ -141,9 +148,7 @@ function  ContactContent(pros) {
     }
 
     const handle_contact_delete = async () => {
-        const field = contact.field
-
-        const transaction_id = await walletHelper.deleteContact(field)
+        const transaction_id = await walletHelper.deleteContact(contact.record)
         if(transaction_id){
             content_root.render(<Pop transactionId={transaction_id}/>)
         }
@@ -159,7 +164,16 @@ function  ContactContent(pros) {
         if(nameErrorInput||addressErrorInput){
             return;
         }
-        const transaction_id = await walletHelper.addContact(address,name)
+        let transaction_id = ''
+        if(contact.record)
+        {
+            transaction_id = await walletHelper.updateContact(contact.record,address,name)
+        }
+        else{
+            transaction_id = await walletHelper.addContact(address,name)
+        }
+
+
         if(transaction_id){
             content_root.render(<Pop transactionId={transaction_id}/>)
         }
@@ -206,7 +220,7 @@ function  ContactContent(pros) {
                                 !pros.editing &&
                                 <div onClick={handle_name_edit_clicked} className="menu-button">
                                     <img className="img_button" src='edit.png'/>
-                                    Edit Name
+                                    Edit
                                 </div>
 
                             }
@@ -240,14 +254,14 @@ function  ContactContent(pros) {
 
                     <h4>Address</h4>
                     {
-                        !pros.editing && <div>{contact.address}</div>
+                        !nameEditing && <div>{contact.address}</div>
                     }
 
 
                     {
-                        pros.editing && <input className={ addressErrorInput ? "error-input" : "input-item-edit" }
+                        nameEditing && <input className={ addressErrorInput ? "error-input" : "input-item-edit" }
                                                 onChange={handle_address_input_changed}
-
+                                                value={address}
                                                 onClick={handle_name_input}
                         />
                     }

@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import ReactDOM from "react-dom/client";
 import ConnectButton from "./ConnectButton";
 import EmailContent from "./EmailContent";
-import {content_root} from "./Config";
+import {content_root} from "../Config";
 import RefreshButton from "./RefreshButton";
 import ResizeMenu from "./ResizeMenu";
 
@@ -20,12 +20,24 @@ function PreViewList(pros) {
     function EmailPreview(pros) {
         const email = pros.email;
         const name = email.name
+        const domain = email.domain
+        const tip = email.is_sender ? 'To: ' : 'From: '
+        const get_desc = ()=>{
+            if(name){
+                return tip + name
+            }
+           else if(domain){
+                return tip + domain
+            }
 
+            return null
+        }
+        const desc = get_desc()
         return (
             <div index={pros.index} onClick={()=>changeSelected(pros.index,pros.email)}
                  className={selectIndex===pros.index ? "email-preview-click" : "email-preview"}>
                 <div className="subject">{email.subject}</div>
-                {name && <div>{name}</div>}
+                {desc && <div className='address-item'>{desc}</div>}
                 <div className="sender">{email.is_sender ? email.to :email.sender}</div>
             </div>
         )

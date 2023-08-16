@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
-import './pop.css'
-import {leoWallet} from "./Config";
+import PopStyle from './pop.css'
+import {leoWallet, message_root} from "../Config";
 
 
 
@@ -9,15 +9,16 @@ function Pop(pros) {
     const [isModalOpen, setModalOpen] = useState(true);
     const [progress,setProgress] = useState(0)
     const [tranctionState,setTranctionState] = useState('')
-    const [tipstring,setTipstring] = useState('Work in the background')
+    //const [tipstring,setTipstring] = useState('Work in the background')
     let  intervalId;
+    let actionTimes = 0
     useEffect(() => {
         get_transactionState()
 
         return () => {
-            // 组件即将卸载时执行清理操作、取消订阅或释放资源
+            clearInterval(intervalId)
         };
-    }, []); // 空依赖数组表示只在组件挂载和卸载时执行一次
+    }, []);
 
 
     const openModal = () => {
@@ -33,11 +34,11 @@ function Pop(pros) {
         try{
             console.log(transactionid)
             setTranctionState('Starting...')
-            let intertimes = 0
+
             intervalId = setInterval(function() {
-                intertimes++
-                if(intertimes>50){
-                    clearInterval(intervalId)
+                actionTimes++
+                if(actionTimes>=50){
+                    closeModal()
                 }
                 if(!isModalOpen){
                     clearInterval(intervalId)
@@ -62,13 +63,13 @@ function Pop(pros) {
                             setProgress(80)
                             break
                         case 'Failed':
-                            setTipstring('Close')
+                            //setTipstring('Close')
                             clearInterval(intervalId)
                             break
-                        case "Completed":
+                        case "Completed" || "Finalized":
                             setProgress(100)
-                            setTipstring('Close')
-                            clearInterval(intervalId)
+                            //setTipstring('Close')
+                            closeModal()
                             break
                     }
                 })
@@ -82,20 +83,14 @@ function Pop(pros) {
         <div>
             {isModalOpen && (
                 <div className="modal-overlay">
-                    <div className="modal">
-                        <div className="modal-content">
-                            <h3>Transaction</h3>
-                            <div>{tranctionState}</div>
-                            <div id="progress-container">
 
-                                <div className="progress-bar">
+                    <div className='pop-modal'>
+                        <div className='pop-close-button' onClick={closeModal}>
+                            <img className='pop-ico-img' src={'close.png'}/>
+                        </div>
+                            <h3>{tranctionState}</h3>
+                            <div className='progress-container' id="progress-container">
                                     <div style={{ width: `${progress}%` }} className="progress"></div>
-                                </div>
-
-                            </div>
-                            <button onClick={closeModal}>{tipstring}
-                            </button>
-
                         </div>
                     </div>
                 </div>

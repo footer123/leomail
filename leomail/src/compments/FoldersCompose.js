@@ -1,8 +1,18 @@
 import '../index.css'
-import './Config'
-import {content_root, current_box, preview_root, emitter, leoWallet, set_currentBox, walletHelper} from "./Config";
+import '../Config'
+import {
+    content_root,
+    current_box,
+    preview_root,
+    emitter,
+    leoWallet,
+    set_currentBox,
+    walletHelper,
+    right_root
+} from "../Config";
 import React, {useEffect, useState} from "react";
 import PreViewList from "./EmailPreview";
+import {getContactByAddress, getDomainFromAddress} from "./LocalStoreHelp";
 
 
 function FoldersCompose(pros) {
@@ -53,11 +63,9 @@ function FoldersCompose(pros) {
         }
 
         const email_list = mix_local_contacts(temp_email_list)
+        right_root.render('')
         preview_root.render(<PreViewList  email_list={email_list}/>)
 
-        if(leoWallet.publicKey){
-            document.getElementById('account').textContent = leoWallet.publicKey
-        }
 
     }
 
@@ -71,24 +79,26 @@ function FoldersCompose(pros) {
         }, 2000);
 
         emitter.on('event_wallet_connected',async () => {
-            console.log('触发了 event_wallet_connected 事件');
+            console.log('emit event_wallet_connected ');
             if(leoWallet.publicKey){
-                document.getElementById('account').textContent = leoWallet.publicKey
+                const subpri = leoWallet.publicKey.substr(0,16)
+                const subend = leoWallet.publicKey.substr(leoWallet.publicKey.length-5,leoWallet.publicKey.length-1)
+                document.getElementById('account').textContent = subpri+'····'+subend
             }
         });
         emitter.on('refreshPreviewEvent',async ()=>{
-            console.log('触发了 refreshPreviewEvent 事件');
+            console.log('emit refreshPreviewEvent ');
             await refreshPreview()
         })
         emitter.on('event_change_folder',async () => {
-            console.log('触发了 event_change_folder 事件');
+            console.log('emit event_change_folder ');
             await refreshPreview()
         });
 
         return () => {
-            // 组件即将卸载时执行清理操作、取消订阅或释放资源
+
         };
-    }, []); // 空依赖数组表示只在组件挂载和卸载时执行一次
+    }, []);
 
 
     return (
@@ -104,17 +114,16 @@ function FoldersCompose(pros) {
 
 function mix_local_contacts(emails) {
     try{
-        if(emails.length === 1){return emails}
-        const local_contacts_str =  localStorage.getItem('contacts')
-        if(!local_contacts_str){return emails}
-        const contacts = JSON.parse(local_contacts_str)
-        if(contacts.length === 0){return emails}
         let new_email_list = []
         emails.forEach(item=>{
             const new_item = item
-            const contact = contacts.filter(cc=>{return cc.address === (item.is_sender ? item.to : item.sender)})
+            const contact = getContactByAddress((item.is_sender ? item.to : item.sender))
+            const domain = getDomainFromAddress((item.is_sender ? item.to : item.sender))
             if(contact){
-                new_item['name'] = contact[0].name
+                new_item['name'] =  contact.name
+            }
+            if(domain){
+                new_item['domain'] = domain + "@leomail.cc"
             }
             new_email_list.push(new_item)
         })

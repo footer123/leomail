@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './MessageBox.css'
-import {emitter, leoWallet, message_root} from "./Config";
+import {emitter, leoWallet, message_root} from "../Config";
 
 const MessageBox = ({ title, content,url }) => {
     const [showMessageBox, setShowMessageBox] = useState(true);

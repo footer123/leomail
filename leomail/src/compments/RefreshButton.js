@@ -7,7 +7,7 @@ import PreViewList from "./EmailPreview";
 import '../WalletHelper'
 import {WalletHelper} from "../WalletHelper";
 
-import {current_box, emitter, leoWallet, walletHelper} from "./Config";
+import {current_box, emitter, leoWallet, walletHelper} from "../Config";
 import {EventEmitter} from "events";
 
 

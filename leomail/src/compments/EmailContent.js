@@ -1,11 +1,10 @@
 import React from "react";
-import {content_root, leoWallet, walletHelper} from "./Config";
+import {content_root, leoWallet, walletHelper} from "../Config";
 import EmailCompose from "./EmailCompose";
 import Pop from "./TranscationPop";
 
 export default  function EmailContent(pros) {
     const email = pros.email;
-
     const handle_reply = () => {
         const temp_email = {'to':email.to}
         content_root.render(<EmailCompose email={temp_email}/>);
@@ -35,6 +34,33 @@ export default  function EmailContent(pros) {
         }
 
     }
+
+    const sub_sender1 = ()=>{
+        if(email.name || email.domain){
+            let substr=''
+            substr = email.is_sender ? 'To: ' : 'From: '
+            if(email.name){
+                substr += email.name
+            }
+            if(email.domain){
+                substr += ' ('+email.domain+') '
+            }
+            return substr
+        }
+        return ''
+    }
+    const sub_sender2 = () => {
+        if(!email.name && !email.domain){
+            let substr=''
+            substr = email.is_sender ? 'To: ' : 'From: '
+            substr+= email.is_sender ? email.to : email.sender
+            return substr
+        }
+        return  email.is_sender ? email.to : email.sender
+
+    }
+    const subsender1 = sub_sender1()
+    const subsender2 = sub_sender2()
     return (
 
         <div className="content">
@@ -69,7 +95,8 @@ export default  function EmailContent(pros) {
             </div>
             <div className="header">
                 <div className="subject">{email.subject}</div>
-                <div className="sub_sender">{email.is_sender ? 'To: '+email.to : 'From: '+email.sender}</div>
+                <div className="sub_sender">{subsender1}</div>
+                <div className="sub_sender">{subsender2}</div>
                 <div className="timestamp">{email.time}</div>
             </div>
             <div className="sub-content">

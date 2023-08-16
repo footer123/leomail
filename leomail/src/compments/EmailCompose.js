@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import './EmailCompose.css'
 import {LeoWalletAdapter} from "@demox-labs/aleo-wallet-adapter-leo";
 import {Transaction, WalletAdapterNetwork, WalletNotConnectedError} from "@demox-labs/aleo-wallet-adapter-base";
-import {content_root, leoWallet, program_id, walletHelper} from "./Config";
+import {content_root, leoWallet, message_root, program_id, walletHelper} from "../Config";
 import TranscationPop from "./TranscationPop";
 import Pop from "./TranscationPop";
+import MessageBox from "./MessageBox";
 
 function EmailCompose(pros) {
     const old_email = pros.email ? pros.email:"";
@@ -17,47 +18,80 @@ function EmailCompose(pros) {
     const [tranctionState,setTranctionState] = useState('')
     const [addressErrorInput,setAddressErrorInput] = useState(false)
     const regex = /^aleo[A-Za-z0-9]{59}$/;
-
+    const regex_domain = /^[a-z0-9]+@leomail\.cc/;
 
 
     const handleRecipientChange = (e) => {
 
-        if (regex.test(e.target.value)) {
+        if (regex.test(e.target.value) || regex_domain.test(e.target.value)) {
             setAddressErrorInput(false)
         } else {
             setAddressErrorInput(true)
         }
-        setRecipient(e.target.value)
+        const filteredValue = e.target.value.replace(/[^\x00-\x7F]/g, ''); // 过滤非 ASCII 字符
+        setRecipient(filteredValue)
 
     };
 
     const handleSubjectChange = (e) => {
         let inputValue = e.target.value;
-        if (inputValue.length > 50) {
-            inputValue = inputValue.slice(0, 100); // 限制长度为100
+        if (inputValue.length > 120) {
+            inputValue = inputValue.slice(0, 120); // 限制长度为100
         }
-        const filteredValue = inputValue.replace(/[^\x00-\x7F]/g, ''); // 过滤非 ASCII 字符
-        setSubject(filteredValue);
+        const encoder = new TextEncoder();
+        if(encoder.encode(inputValue).length>500){
+            return
+        }
+
+       // const filteredValue = inputValue.replace(/[^\x00-\x7F]/g, ''); // 过滤非 ASCII 字符
+        setSubject(inputValue);
     };
 
     const handleContentChange = (e) => {
         let inputValue = e.target.value;
-        if (inputValue.length > 150) {
-            inputValue = inputValue.slice(0, 150); // 限制长度为150
+        if (inputValue.length > 500) {
+            inputValue = inputValue.slice(0, 500); // 限制长度为150
         }
-        const filteredValue = inputValue.replace(/[^\x00-\x7F]/g, ''); // 过滤非 ASCII 字符
-        setContent(filteredValue);
+        const encoder = new TextEncoder();
+        if(encoder.encode(inputValue).length>500){
+            return
+        }
+
+
+        //const filteredValue = inputValue.replace(/[^\x00-\x7F]/g, ''); // 过滤非 ASCII 字符
+        setContent(inputValue);
     };
 
+    const getDomainAddress = (domain) => {
+        const field = walletHelper.stringToAscii(domain)+'field'
+        const link_user_contact = 'https://vm.aleo.org/api/testnet3/program/'+program_id+'/mapping/total_nft/'+field
+
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", link_user_contact, false ); // false 为同步请求
+        xmlHttp.send( null );
+        if (xmlHttp.responseText !== 'null'){
+          return xmlHttp.responseText
+        }
+        else{
+           return  null
+        }
+    }
     const handleSendClick = async  () => {
         if(addressErrorInput){return}
         if(!await walletHelper.connectWallet()) {return}
-
+        let address = recipient
+        if(recipient.includes("@leomail.cc")){
+            address = getDomainAddress(recipient.replace('@leomail.cc','')).replace(/"/g, '');
+        }
+        if(!address || address==='null'){
+            message_root.render(<MessageBox key={Date.now()+''} title="Info" content={"Can't get the address of " + recipient} />)
+            return
+        }
         // 在这里处理发送邮件的逻辑
-        console.log('Recipient:', recipient);
+        console.log('Recipient:', address);
         console.log('Subject:', subject);
         console.log('Content:', content);
-        if(!recipient || !content || !subject){
+        if(!content || !subject){
             alert("parameters can not be null")
             return}
         if(recipient.length===0
@@ -66,23 +100,21 @@ function EmailCompose(pros) {
             alert("parameters can not be null")
             return
         }
-        const to_address = recipient;
-        const as_subject = walletHelper.stringToAscii(subject)
-        const as_content = walletHelper.stringToAscii(content)
-        let subject_group = get_push_group(as_subject,2);
-        let content_group = get_push_group(as_content,6);
+        const to_address = address;
+        const as_subject = walletHelper.stringToInt(subject)
+        const as_content = walletHelper.stringToInt(content)
+        let sub_utf_string = as_subject.map(item=>(item+100).toString()).join('');
+        let content_utf_string = as_content.map(item=>(item+100).toString()).join('');
+
+        let subject_group = get_utf_380_string(sub_utf_string);
+        let content_group = get_utf_1520_string(content_utf_string);
+
         console.log('subject'+subject_group)
         console.log('content'+content_group)
         const email = {
             'timestamp':Date.now()+'u64',
-            'sub_one':subject_group[0],
-            'sub_two':subject_group[1],
-            'content_one':content_group[0],
-            'content_two' :content_group[1],
-            'content_three':content_group[2],
-            'content_four':content_group[3],
-            'content_five':content_group[4],
-            'content_six':content_group[5],
+            'subject':subject_group,
+            'content':content_group,
         }
 
 
@@ -94,9 +126,9 @@ function EmailCompose(pros) {
             leoWallet.publicKey,
             WalletAdapterNetwork.Testnet,
             program_id,
-            'sendmsg',
+            'send_msg',
             inputs,
-            '5000000'
+            '3000000'
         );
         try{
             const transtionid = await leoWallet.requestTransaction(transaction)
@@ -164,7 +196,7 @@ function EmailCompose(pros) {
                         id="content"
                         className="form-control"
                         rows="8"
-                        placeholder="Currently supporting a maximum of 150 characters..."
+                        placeholder="Currently supporting a maximum of 500 characters..."
                         value={content}
                         onChange={handleContentChange}
                     ></textarea>
@@ -186,23 +218,50 @@ function EmailCompose(pros) {
 }
 
 
+function padding_string(){
+
+}
 
 
-
-
-
-function get_push_group(content,defaut_length) {
-    let content_group = Array(defaut_length).fill('0field');
-    if(content.length<=75){
-        content_group[0] = content+'field'
-        return content_group;
-    }
-
-    const count = Math.trunc(content.length/75) + (content.length%75 > 0 ? 1 : 0);
-    let sub_content = content;
+function get_utf_1520_string(content_string){
+    const count = Math.trunc(content_string.length/375) + (content_string.length%375 > 0 ? 1 : 0);
+    let content_group = Array(4).fill( {
+        'part1':'0field',
+        'part2':'0field',
+        'part3':'0field',
+        'part4':'0field',
+        'part5':'0field',
+    });
+    let sub_array = content_string;
     for (let i=0;i<count; i++) {
         let value = ''
-        if(sub_content>=75){
+        if(sub_array.length>=375){
+            value = sub_array.substring(0,375);
+            sub_array = sub_array.substr(375);
+        }
+        else{
+            value = sub_array
+        }
+        content_group[i] = get_utf_380_string(value)
+
+    }
+    return {
+        'part1':content_group[0],
+        'part2':content_group[1],
+        'part3':content_group[2],
+        'part4':content_group[3],
+    }
+
+}
+
+function get_utf_380_string(content_string) {
+    let content_group = Array(5).fill('0field');
+
+    const count = Math.trunc(content_string.length/75) + (content_string.length%75 > 0 ? 1 : 0);
+    let sub_content = content_string;
+    for (let i=0;i<count; i++) {
+        let value = ''
+        if(sub_content.length>=75){
             value = sub_content.substring(0,75);
             sub_content = sub_content.substr(75);
         }
@@ -212,16 +271,22 @@ function get_push_group(content,defaut_length) {
         content_group[i] = value+'field';
 
     }
-    return content_group
+    return {
+        'part1':content_group[0],
+        'part2':content_group[1],
+        'part3':content_group[2],
+        'part4':content_group[3],
+        'part5':content_group[4],
+    }
 }
 
 
 async function get_current_msg_id(address) {
-    const link = `https://explorer.hamp.app/api/v1/mapping/get_value/${program_id}/account_msg_count/`+address
-    const xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", link, false ); // false 为同步请求
-    xmlHttp.send( null );
-    const response = xmlHttp.responseText;
-    return response !== 'null' ? response : '0u64'
+
+    const link_blacklist = 'https://vm.aleo.org/api/testnet3/program/'+program_id+'/mapping/account_msg_count/'+address
+    const response = await fetch( link_blacklist);
+    let textValue = await response.json();
+
+    return textValue ? textValue : '0u64'
 }
 export default EmailCompose;

@@ -4,9 +4,9 @@
 }
 
 .compose-email {
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding: 20px;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
 }
 
 .form-group {
@@ -23,7 +23,11 @@ label {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-family: Arial;
+    font-size: 16px;
+    line-height: 22px;
 }
+
 .error-form-control {
     width: 90%;
     padding: 10px;
@@ -34,6 +38,8 @@ label {
 
 textarea {
     resize: vertical;
+    height: 282px;
+    max-height: 500px;
 }
 
 .bottom{

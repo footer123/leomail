@@ -37,6 +37,8 @@
     ]
   },
   "devDependencies": {
-    "@demox-labs/aleo-wallet-adapter-base": "^0.0.15"
+    "@demox-labs/aleo-wallet-adapter-base": "^0.0.15",
+    "javascript-obfuscator": "^4.0.2",
+    "webpack-obfuscator": "^3.5.1"
   }
 }

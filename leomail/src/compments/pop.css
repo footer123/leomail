@@ -1,36 +1,69 @@
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 9px;
+    right: 5px;
+    width: 400px;
+    height: 100px;
+    background-color: #0078d4;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.modal {
-    background-color: #fff;
     border-radius: 4px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.modal-content {
+.pop-modal {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top:0;
+    text-align: center;
+}
+.pop-modal h3{
+    color: black;
+}
+.pop-ico-img{
+    width: 30px;
+    height: 30px;
+}
+.pop-modal-content {
     margin-bottom: 10px;
     text-align: center;
 }
 
-button {
-    margin-top: 30px;
+.pop-close-button {
+    position: absolute;
+    left: 0;
+    top:0;
     padding: 8px 16px;
-    background-color: #ccc;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
+close-button:hover {
     background-color: #ddd;
+}
+
+.progress {
+    height:20px;
+    background-color: #004578;
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progress-container {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background-color: white;
+    bottom: 0;
 }
