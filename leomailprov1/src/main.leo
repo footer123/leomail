@@ -1,6 +1,6 @@
 import credits.leo;
 
-program footerprov4.aleo {
+program leomailprov1.aleo {
 
     // it records the msg index of address
     mapping account_msg_count: address => u64;
