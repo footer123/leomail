@@ -65,6 +65,43 @@ snarkos developer execute "leomailprov1.aleo" "enable_mailbox" "${your_address}"
         black5:address,
     }
 
+## Record  
+
+**Chat**    
+*This is the email record. Each record contains the sender and the recipient.*
+
+
+    record Chat{
+	    owner:address,
+	    target:address,
+	    mail:Mail,
+	    msgid:u64,
+	    is_sender:bool,
+    
+    }
+
+  
+  **Domain NFT**  
+  *after user mint domain nft, we can get the value from mapping **total_nft***
+
+
+    record NFT {
+	    owner:address,
+	    domain:field,
+	    data1:field,
+	    data2:field,
+    }
+
+  **Contact**  
+*the user's contact record, we can get the contact list from record list*
+
+    record Contact {
+	    owner: address,
+	    target:address,
+	    name:field,
+    }
+
+
 
 ## Core Methods
 
