@@ -298,7 +298,7 @@ finalize send_msg:
     input r0 as address.public;
     input r1 as address.public;
     input r2 as u64.public;
-    get.or_use mailbox_state_store[r0] 0u8 into r3;
+    get.or_use mailbox_state_store[r1] 0u8 into r3;
     assert.eq r3 0u8;
     get.or_use account_msg_count[r0] 0u64 into r4;
     add r4 1u64 into r5;

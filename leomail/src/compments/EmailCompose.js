@@ -8,6 +8,7 @@ import {content_root, leoWallet, message_root, program_id, walletHelper} from ".
 import TranscationPop from "./TranscationPop";
 import Pop from "./TranscationPop";
 import MessageBox from "./MessageBox";
+import {add} from "resolve-url-loader/lib/position-algerbra";
 
 function EmailCompose(pros) {
     const old_email = pros.email ? pros.email:"";
@@ -81,22 +82,22 @@ function EmailCompose(pros) {
         if(!await walletHelper.connectWallet()) {return}
         let address = recipient
         if(recipient.includes("@leomail.cc")){
-            address = getDomainAddress(recipient.replace('@leomail.cc','')).replace(/"/g, '');
+            address = getDomainAddress(recipient.replace('@leomail.cc',''))
+            if(!address){
+                message_root.render(<MessageBox key={Date.now()+''} title="Hello" content="This domain name has not been registered yet."   /> )
+                return
+            }
+            address = address.replace(/"/g, '');
         }
-        if(!address || address==='null'){
-            message_root.render(<MessageBox key={Date.now()+''} title="Info" content={"Can't get the address of " + recipient} />)
+        if(subject.trim().length === 0){
+            message_root.render(<MessageBox key={Date.now()+''} title="Info" content="Subject can't be null." />)
+            return
+        }
+        if(content.trim().length === 0){
+            message_root.render(<MessageBox key={Date.now()+''} title="Info" content="Content can't be null." />)
             return
         }
 
-        if(!content || !subject){
-            alert("parameters can not be null")
-            return}
-        if(recipient.length===0
-            || subject.length === 0
-            || content.length===0){
-            alert("parameters can not be null")
-            return
-        }
         const to_address = address;
         const as_subject = walletHelper.stringToInt(subject)
         const as_content = walletHelper.stringToInt(content)

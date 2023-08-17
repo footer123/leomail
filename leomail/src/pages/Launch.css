@@ -73,10 +73,11 @@
 
 
 .imageCarousel{
-    width: 624px;
-    height: 368px;
+    width: 40vw;
+    height: 23vw;
     border-radius: 20px;
     animation: slideInFromLeft 1s ease-out;
+    box-shadow:10px 10px 10px 10px rgba(0, 0, 0, 0.5);
 }
 @keyframes slideInFromLeft {
     0% {
@@ -95,17 +96,22 @@
 }
 
 .launch-introduce-left{
-    margin-right: 60px;
+
+    margin-left: 20px;
     text-align: left;
+    width: 40vw;
 }
 .launch-introduce-left div{
-    font-size: 70px;
+    font-size: 4.5vw;
     font-weight: bold;
 }
-
+.launch-introduce-left h1{
+    font-size: 2vw;
+    font-weight: bold;
+}
 .launch-introduce-right{
-    box-shadow:10px 10px 10px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
+
+    width: 40vw;
 }
 
 .launch-button {
@@ -148,10 +154,15 @@
    text-align: left;
    border-color: black;
     border-width: 3px;
-    width: 500px;
+    width: 33vw;
+}
+.launch-roadmap-sub h3{
+    text-align: center;
+    width: 30vw;
 }
 
 
 .launch-contact {
     text-align: center;
+    margin-bottom: 140px;
 }

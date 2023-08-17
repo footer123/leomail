@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import ConnectButton from "./compments/ConnectButton";
-import {content_root, emitter, init_roots, leoWallet, preview_root, right_root} from "./Config";
+import {content_root, emitter, init_roots, leoWallet, preview_root, right_root, set_current_page} from "./Config";
 import FoldersCompose from "./compments/FoldersCompose";
 import Settings from "./pages/Settings";
 import {ContactList} from "./compments/ContactList";
@@ -19,9 +19,13 @@ function App() {
     }
 
     const mintNftClick = () => {
+        set_current_page('mint_nft')
+        preview_root.render('')
+        content_root.render('')
         right_root.render(<MintContainer/>)
     }
     const contactClick = () => {
+        set_current_page('contacts')
         preview_root.render(<ContactList/>)
         content_root.render('')
         right_root.render('')
@@ -38,8 +42,13 @@ function App() {
       <div className="container">
 
         <div className="sidebar">
-          <div className="menu-icon"><img className="ico-img-top" src="leo.png"/></div>
-          <div className="menu-top">Leo-Mail</div>
+            <div  className="menu-icon">
+                <div>
+                    <img className="menu-icon-img" src="webicon.png"/>
+                </div>
+            </div>
+
+          {/*<div className="menu-top">Leo-Mail</div>*/}
 
           <div id="new_email" className="menu-item">
             <h2 onClick={newMailClick} className="menu-item-h2">New Mail</h2>
@@ -52,7 +61,7 @@ function App() {
           </div>
           <div id="messagebox"></div>
           <div className="menu-item">
-            <h2>Folders</h2>
+            <h2 className='menu-item-folders-h2'>Folders</h2>
             <div className="sub-menu">
               <div id="folders" className="folder-list">
                   <FoldersCompose/>

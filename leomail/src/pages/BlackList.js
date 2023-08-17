@@ -28,6 +28,7 @@ function BlackList() {
         }
        const content = JSON.stringify(blacks).replace(/"/g, '')
        await walletHelper.setBlackList(content)
+        close()
     }
     const handleInputChange = (id, value) => {
         let correctList = correctInput
@@ -72,16 +73,16 @@ function BlackList() {
         getBlackList().then()
 
         return () => {
-            // 组件即将卸载时执行清理操作、取消订阅或释放资源
+
         };
-    }, []); // 空依赖数组表示只在组件挂载和卸载时执行一次
+    }, []);
 
     return (
         <div className="modal-container">
             <div className='modal-content'>
                 <h1>BlackList</h1>
                 <div className='close-button' onClick={close}>
-                    <img className='img_button' src={'close.png'}/>
+                    <img  className='img_button' src={'close.png'}/>
                 </div>
                 <p>Block the following address from sending you mails.</p>
                 <div className="input-list">

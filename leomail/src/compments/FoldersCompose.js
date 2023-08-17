@@ -8,7 +8,7 @@ import {
     leoWallet,
     set_currentBox,
     walletHelper,
-    right_root
+    right_root, set_current_page, current_page
 } from "../Config";
 import React, {useEffect, useState} from "react";
 import PreViewList from "./EmailPreview";
@@ -18,10 +18,8 @@ import {getContactByAddress, getDomainFromAddress} from "./LocalStoreHelp";
 function FoldersCompose(pros) {
     const [name,setName] = useState('inbox')
     const changeFolder = async (folder) => {
-        // 这里可以根据选中的 folder 做相应的操作
-        console.log('Selected Folder:', folder);
         set_currentBox(folder)
-
+        set_current_page('folders')
         if(name !== folder){
             content_root.render(<div></div>)
         }
@@ -29,7 +27,7 @@ function FoldersCompose(pros) {
         await refreshPreview()
     }
 
-    const refreshPreview = async () => {
+    const refreshPreview = async (isAuto) => {
         if(!await walletHelper.connectWallet()) {return}
         const type = current_box
         let temp_email_list = []
@@ -62,7 +60,9 @@ function FoldersCompose(pros) {
         }
 
         const email_list = mix_local_contacts(temp_email_list)
+
         right_root.render('')
+
         preview_root.render(<PreViewList  email_list={email_list}/>)
 
 
@@ -76,23 +76,28 @@ function FoldersCompose(pros) {
         setTimeout(() => {
             changeFolder('inbox')
         }, 2000);
+        const interval = setInterval(()=>{
+            if (leoWallet.connected && current_page==='folders'){
+                refreshPreview(true)
+            }
 
+        },10000)
         emitter.on('event_wallet_connected',async () => {
             if(leoWallet.publicKey){
-                const subpri = leoWallet.publicKey.substr(0,16)
+                const subpri = leoWallet.publicKey.substr(0,12)
                 const subend = leoWallet.publicKey.substr(leoWallet.publicKey.length-5,leoWallet.publicKey.length-1)
                 document.getElementById('account').textContent = subpri+'····'+subend
             }
         });
         emitter.on('refreshPreviewEvent',async ()=>{
-            await refreshPreview()
+            await refreshPreview(false)
         })
         emitter.on('event_change_folder',async () => {
-            await refreshPreview()
+            await refreshPreview(false)
         });
 
         return () => {
-
+            clearInterval(interval)
         };
     }, []);
 

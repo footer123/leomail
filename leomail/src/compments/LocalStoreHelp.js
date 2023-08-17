@@ -38,8 +38,16 @@ export const syncAllContacts = async () => {
 export const syncAllDomains = async () => {
 
     try{
-        const response = await fetch( remote_base_url +'/list_program_mapping_values/'+program_id+'/total_nft');
-        const domains = await response.json();
+        let domains;
+        const response = await fetch( remote_base_url +'list_program_mapping_values/'+program_id+'/total_nft');
+        if(response.status === 500){
+            const response = await fetch( remote_base_url +'list_program_mapping_values/'+program_id+'/total_nft'+'?outdated=1');
+            domains = await response.json();
+        }
+        else{
+            domains = await response.json();
+        }
+
 
         localStorage.setItem('Domains',JSON.stringify(domains))
     }
@@ -51,12 +59,18 @@ export const syncAllDomains = async () => {
 
 
 export const getDomainFromAddress = (address) => {
-    const domainList = JSON.parse(localStorage.getItem('Domains'))
-    const filterValue = domainList.filter(item=>item.value === address)
-    if(filterValue.length>0){
-        return ascii_to_string(filterValue[0].key)
+    try{
+        const domainList = JSON.parse(localStorage.getItem('Domains'))
+        const filterValue = domainList.filter(item=>item.value === address)
+        if(filterValue.length>0){
+            return ascii_to_string(filterValue[0].key)
+        }
+        return null
     }
-    return null
+    catch (e) {
+        return null
+    }
+
 
 }
 

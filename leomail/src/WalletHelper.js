@@ -8,7 +8,7 @@ export class WalletHelper {
 
     connectWallet = async ()=>{
         try{
-            const state = await leoWallet.connect("VIEW_KEY_ACCESS", WalletAdapterNetwork.Testnet);
+            const state = await leoWallet.connect("AUTO_DECRYPT", WalletAdapterNetwork.Testnet);
 
             emitter.emit('event_wallet_connected')
             return true

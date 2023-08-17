@@ -7,11 +7,17 @@ import { LeoWalletAdapter } from "@demox-labs/aleo-wallet-adapter-leo";
    export const walletHelper = new WalletHelper()
    export let current_box = 'inbox'
    export const emitter = new EventEmitter();
-   export const program_id = 'leomailprov1.aleo'
+   export const program_id = 'leomailprov2.aleo'
    export const remote_base_url = 'https://explorer.hamp.app/api/v1/mapping/'
    export const set_currentBox = (box) => {
      current_box = box
    }
+
+   export let current_page = 'folders'
+   export  const set_current_page = (page) => {
+      current_page = page
+   }
+
    export let right_root = null
    export let message_root = null
    export let content_root = null

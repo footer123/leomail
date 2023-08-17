@@ -64,8 +64,8 @@ const Settings = () => {
 
     return (
         <div className="menu-container">
-            <div className="setting-menu" onClick={toggleMenu}>
-                <img src="setting.png"/>
+            <div className="setting-menu" >
+                <img onClick={toggleMenu}  src="setting.png"/>
             </div>
             {isMenuOpen && (
                 <div className="overlay" onClick={toggleMenu}></div>

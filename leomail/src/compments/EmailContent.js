@@ -6,7 +6,7 @@ import Pop from "./TranscationPop";
 export default  function EmailContent(pros) {
     const email = pros.email;
     const handle_reply = () => {
-        const temp_email = {'to':email.to}
+        const temp_email = {'to':email.sender}
         content_root.render(<EmailCompose email={temp_email}/>);
     }
     const hand_edit = () => {

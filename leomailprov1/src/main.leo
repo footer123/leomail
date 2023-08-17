@@ -303,7 +303,7 @@ program leomailprov1.aleo {
         target:address,
         msgid:u64
         ) {
-        let state:u8= mailbox_state_store.get_or_use(sender,0u8);
+        let state:u8= mailbox_state_store.get_or_use(target,0u8);
         assert_eq(state,0u8);
         let count:u64 = account_msg_count.get_or_use(sender,0u64);
         assert_eq(msgid, count+1u64);

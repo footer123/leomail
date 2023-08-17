@@ -17,9 +17,9 @@ function Launch() {
             <Section id="roadmap">
                 <Roadmap />
             </Section>
-            <Section id="contact" title="Contact">
-                <Contact />
-            </Section>
+            <div className="launch-contact">
+                <h2>Email: leomail901@gmail.com</h2>
+            </div>
         </div>
     );
 }
@@ -66,8 +66,9 @@ function Introduce() {
             <div className='launch-introduce-left'>
                 <div>Welcome to</div>
                 <div>Leo Mail</div>
-                <h1>A beacon of privacy, security, and </h1>
-                <h1>decentralization in the world of mail communication.</h1>
+                <h1>A privacy, security, and </h1>
+                <h1>decentralization mail service base on </h1>
+                <h1>ALEO Network.</h1>
                 <button onClick={launchClick} className='launch-button'>Launch APP</button>
             </div>
             <div className='launch-introduce-right'>
@@ -81,7 +82,8 @@ function Introduce() {
 function Roadmap() {
     const tasks = [
         {
-            title: "2023Q3 - Foundation Improvement and Functionality Development",
+            title1:"2023Q3",
+            title2: "Foundation Improvement and Functionality Development",
             items: [
                 "Improve existing blockchain sending and receiving functions",
                 "Optimize performance and response speed",
@@ -92,7 +94,8 @@ function Roadmap() {
             ]
         },
         {
-            title: "2023Q4 - Integration with Traditional Email Channels",
+            title1: "2023Q4",
+            title2: "Integration with Traditional Email Channels",
             items: [
                 "Research interaction mechanisms with traditional emails",
                 "API docking research with mainstream email service providers (e.g., Gmail, Outlook, etc.)",
@@ -103,7 +106,8 @@ function Roadmap() {
             ]
         },
         {
-            title: "2024Q1 - Functionality Completion and Promotion",
+            title1: "2024Q1",
+            title2: "Functionality Completion and Promotion",
             items: [
                 "Complete all functionalities",
                 "Iterate and optimize functionalities developed in the first and second quarters",
@@ -135,7 +139,8 @@ function Roadmap() {
         const quarter = pros.quarter
         return (
             <div className='launch-roadmap-sub'>
-                <h3>{quarter.title}</h3>
+                <h3>{quarter.title1}</h3>
+                <h3>{quarter.title2}</h3>
                 <ul>
                     {quarter.items.map((item, idx) => (
                         <li key={idx}>{item}</li>

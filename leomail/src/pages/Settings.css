@@ -1,11 +1,15 @@
+.menu-container {
+    position: relative;
+
+}
+
 .setting-menu{
-
-
+    text-align: center;
+    margin-top: 40px;
 }
 .setting-menu img{
     width: 30px;
     height: 30px;
-    right: 0;
 }
 
 .setting-menu img:hover{
@@ -15,11 +19,7 @@
 
 
 
-.menu-container {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-}
+
 
 .open-btn {
     position: absolute;
@@ -34,7 +34,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
+    z-index: 5;
 }
 
 .menu {
@@ -47,13 +47,17 @@
     color: black;
     padding: 20px ;
     transition: right 0.3s ease-in-out;
-    z-index: 3;
+    z-index: 5;
 }
 
 .menu.open {
     right: 0;
+    overflow: auto;
 }
 
+.menu.open h2{
+    margin-top: 10px;
+}
 .menu div {
     display: block;
     color: black;
