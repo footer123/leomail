@@ -68,9 +68,10 @@ Leo Mail is an innovative decentralized email platform built on the Aleo Network
     cargo install --path .
 
 **Execute**  
-*eg: enable_mailbox*
+*eg: enable_mailbox*  
+*The program id deployed on the testing network is **leomailprov2.aleo***
 ```
-snarkos developer execute "leomailprov1.aleo" "enable_mailbox" "${your_address}" --private-key "${your_privateKey}" --query "https://vm.aleo.org/api" --broadcast "https://vm.aleo.org/api/testnet3/transaction/broadcast" --fee 1000000 --record "${RECORD}"
+snarkos developer execute "leomailprov2.aleo" "enable_mailbox" "${your_address}" --private-key "${your_privateKey}" --query "https://vm.aleo.org/api" --broadcast "https://vm.aleo.org/api/testnet3/transaction/broadcast" --fee 1000000 --record "${RECORD}"
 ```
 
 ## Structs:
